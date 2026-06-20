@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framework - Coherent Frameworks Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            padding: 20px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 20px 25px;
+            display: block;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-bottom-color: #667eea;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.3em;
+            color: #b8b8d1;
+            line-height: 1.8;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Framework Overview */
+        .framework-intro {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 50px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            border-left: 5px solid #667eea;
+            line-height: 1.8;
+        }
+
+        /* Interactive Flow Diagram */
+        .flow-section {
+            margin: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #667eea;
+        }
+
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-node {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .flow-node:hover {
+            transform: scale(1.05);
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+        }
+
+        .flow-node-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .flow-node-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .flow-node-desc {
+            color: #b8b8d1;
+            font-size: 0.95em;
+        }
+
+        .flow-arrow {
+            font-size: 2.5em;
+            color: #667eea;
+            animation: pulse 2s infinite;
+        }
+
+        /* Layer Cards */
+        .layers-section {
+            margin: 80px 0;
+        }
+
+        .layer-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .layer-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .layer-header {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+            padding: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .layer-header:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
+        }
+
+        .layer-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 100px;
+        }
+
+        .layer-title-group {
+            flex: 1;
+        }
+
+        .layer-title {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .layer-subtitle {
+            font-size: 1.1em;
+            color: #b8b8d1;
+        }
+
+        .layer-toggle {
+            font-size: 2em;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .layer-card.active .layer-toggle {
+            transform: rotate(180deg);
+        }
+
+        .layer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .layer-card.active .layer-content {
+            max-height: 1000px;
+        }
+
+        .layer-body {
+            padding: 40px;
+        }
+
+        .layer-description {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #d1d1e0;
+            margin-bottom: 30px;
+        }
+
+        .layer-functions {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .functions-title {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .function-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .function-item {
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            border-left: 3px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .function-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(5px);
+        }
+
+        .function-item::before {
+            content: '✓ ';
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .layer-example {
+            background: rgba(118, 75, 162, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 3px solid #764ba2;
+        }
+
+        .example-title {
+            font-size: 1.2em;
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .example-content {
+            color: #d1d1e0;
+            line-height: 1.7;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            margin: 80px 0;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 60px 40px;
+            border-radius: 20px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit-card {
+            padding: 30px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .benefit-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .benefit-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .benefit-text {
+            color: #b8b8d1;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .cta-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .cta-text {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background: white;
+            color: #667eea;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
+            border-top: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .copyright {
+            color: #8e8ea8;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 12, 41, 0.98);
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .page-header h1 {
+                font-size: 2.5em;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .layer-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .layer-number {
+                min-width: auto;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Coherent Frameworks</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="framework.html" class="active">Framework</a></li>
+                <li><a href="platform.html">Platform</a></li>
+                <li><a href="infrastructure.html">Infrastructure</a></li>
+                <li><a href="upload.html">Upload Assets</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Four-Layer Framework</h1>
+        <p>The logical architecture that governs how creativity transforms into operational clarity</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Framework Introduction -->
+        <div class="framework-intro">
+            <p>The framework is the logical architecture that governs how the application thinks and operates. At its core, it is divided into four interdependent layers that work seamlessly together to transform creative expression into functional execution. Each layer has specific responsibilities and functions that support the overall coherence of the system.</p>
+            <p style="margin-top: 20px;">This framework ensures that creativity moves from expression to execution without losing intent or coherence. Every input is processed through standardized logic, interpreted for meaning, synthesized into unified outputs, and delivered through practical applications.</p>
+        </div>
+
+        <!-- Process Flow Diagram -->
+        <div class="flow-section">
+            <h2 class="section-title">Framework Process Flow</h2>
+            <div class="flow-diagram">
+                <div class="flow-node">
+                    <div class="flow-node-icon">📥</div>
+                    <div class="flow-node-title">Input</div>
+                    <div class="flow-node-desc">Standardize creative assets</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">
+                    <div class="flow-node-icon">🔍</div>
+                    <div class="flow-node-title">Interpret</div>
+                    <div class="flow-node-desc">Extract meaning & patterns</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">
+                    <div class="flow-node-icon">⚡</div>
+                    <div class="flow-node-title">Synthesize</div>
+                    <div class="flow-node-desc">Combine into unified outputs</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">
+                    <div class="flow-node-icon">🚀</div>
+                    <div class="flow-node-title">Apply</div>
+                    <div class="flow-node-desc">Deliver actionable results</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layer Cards -->
+        <div class="layers-section">
+            <h2 class="section-title">Explore Each Layer</h2>
+
+            <!-- Layer 1: Input -->
+            <div class="layer-card" onclick="toggleLayer(this)">
+                <div class="layer-header">
+                    <div class="layer-number">01</div>
+                    <div class="layer-title-group">
+                        <div class="layer-title">Input Layer</div>
+                        <div class="layer-subtitle">Accepts and standardizes raw creative material</div>
+                    </div>
+                    <div class="layer-toggle">▼</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-body">
+                        <p class="layer-description">The Input Layer is the entry point for all creative material. It accepts diverse formats such as images, sound files, text documents, and symbolic data, then standardizes them so different creative forms can be processed using shared logic. This layer ensures that regardless of the original format, all inputs are prepared for consistent interpretation.</p>
+                        
+                        <div class="layer-functions">
+                            <h3 class="functions-title">Key Functions</h3>
+                            <div class="function-list">
+                                <div class="function-item">Data ingestion and normalization</div>
+                                <div class="function-item">Format standardization across media types</div>
+                                <div class="function-item">Initial validation and quality assessment</div>
+                                <div class="function-item">Metadata extraction and tagging</div>
+                                <div class="function-item">Asset categorization and organization</div>
+                                <div class="function-item">Version control and archiving</div>
+                            </div>
+                        </div>
+
+                        <div class="layer-example">
+                            <div class="example-title">Example in Action</div>
+                            <div class="example-content">When a designer uploads a logo file, color palette, and brand voice document, the Input Layer accepts all three formats, extracts relevant metadata (file type, dimensions, color codes, text content), validates their integrity, and prepares them for the next stage of analysis.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer 2: Interpretation -->
+            <div class="layer-card" onclick="toggleLayer(this)">
+                <div class="layer-header">
+                    <div class="layer-number">02</div>
+                    <div class="layer-title-group">
+                        <div class="layer-title">Interpretation Layer</div>
+                        <div class="layer-subtitle">Extracts meaning through pattern recognition and analysis</div>
+                    </div>
+                    <div class="layer-toggle">▼</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-body">
+                        <p class="layer-description">The Interpretation Layer applies pattern recognition, rules, and analytical models to extract meaning from standardized inputs. It identifies emotional tone, stylistic identity, thematic consistency, and other meaningful attributes. This is where creative elements are translated into structured data that can be measured, compared, and refined.</p>
+                        
+                        <div class="layer-functions">
+                            <h3 class="functions-title">Key Functions</h3>
+                            <div class="function-list">
+                                <div class="function-item">Pattern and theme identification</div>
+                                <div class="function-item">Emotional and aesthetic analysis</div>
+                                <div class="function-item">Contextual meaning extraction</div>
+                                <div class="function-item">Metadata generation and enrichment</div>
+                                <div class="function-item">Style consistency evaluation</div>
+                                <div class="function-item">Semantic relationship mapping</div>
+                            </div>
+                        </div>
+
+                        <div class="layer-example">
+                            <div class="example-title">Example in Action</div>
+                            <div class="example-content">Analyzing a music composition, the Interpretation Layer identifies the emotional tone (uplifting, melancholic), tempo patterns, key signatures, and chord progressions. It recognizes that certain musical elements align with specific brand personalities, creating a structured emotional profile that can guide marketing decisions.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer 3: Synthesis -->
+            <div class="layer-card" onclick="toggleLayer(this)">
+                <div class="layer-header">
+                    <div class="layer-number">03</div>
+                    <div class="layer-title-group">
+                        <div class="layer-title">Synthesis Layer</div>
+                        <div class="layer-subtitle">Combines data into unified, coherent outputs</div>
+                    </div>
+                    <div class="layer-toggle">▼</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-body">
+                        <p class="layer-description">The Synthesis Layer combines interpreted data from multiple sources into unified outputs. It creates brand philosophies, creative direction roadmaps, adaptive style systems, and strategic frameworks. This layer ensures all outputs align under a single guiding logic, maintaining coherence across different applications and contexts.</p>
+                        
+                        <div class="layer-functions">
+                            <h3 class="functions-title">Key Functions</h3>
+                            <div class="function-list">
+                                <div class="function-item">Cross-element integration and alignment</div>
+                                <div class="function-item">Coherence validation and testing</div>
+                                <div class="function-item">Strategic alignment and planning</div>
+                                <div class="function-item">Unified framework generation</div>
+                                <div class="function-item">Conflict resolution between elements</div>
+                                <div class="function-item">Optimization and refinement</div>
+                            </div>
+                        </div>
+
+                        <div class="layer-example">
+                            <div class="example-title">Example in Action</div>
+                            <div class="example-content">After analyzing a company's logo (geometric, modern), color palette (blues and grays suggesting trust and professionalism), and mission statement (innovation-focused), the Synthesis Layer creates a comprehensive brand framework that ensures all marketing materials, product designs, and communications maintain consistent visual and emotional identity.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer 4: Application -->
+            <div class="layer-card" onclick="toggleLayer(this)">
+                <div class="layer-header">
+                    <div class="layer-number">04</div>
+                    <div class="layer-title-group">
+                        <div class="layer-title">Application Layer</div>
+                        <div class="layer-subtitle">Delivers results through practical interfaces and workflows</div>
+                    </div>
+                    <div class="layer-toggle">▼</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-body">
+                        <p class="layer-description">The Application Layer delivers synthesized results through dashboards, templates, exports, and APIs that integrate with real-world workflows. It makes insights accessible and actionable for advertising campaigns, content creation, product development, and more. This layer bridges the gap between analysis and implementation.</p>
+                        
+                        <div class="layer-functions">
+                            <h3 class="functions-title">Key Functions</h3>
+                            <div class="function-list">
+                                <div class="function-item">User interface delivery and visualization</div>
+                                <div class="function-item">Export and integration capabilities</div>
+                                <div class="function-item">Real-time data visualization</div>
+                                <div class="function-item">Workflow automation support</div>
+                                <div class="function-item">API endpoints for external tools</div>
+                                <div class="function-item">Template and guideline generation</div>
+                            </div>
+                        </div>
+
+                        <div class="layer-example">
+                            <div class="example-title">Example in Action</div>
+                            <div class="example-content">The platform generates a downloadable brand style guide PDF, creates interactive dashboards showing emotional tone alignment across campaigns, exports color palettes to design software via API, and provides real-time recommendations for maintaining brand consistency in new content.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="benefits-section">
+            <h2 class="section-title">Framework Benefits</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-title">Consistency</div>
+                    <div class="benefit-text">Ensures all creative outputs maintain coherence and alignment with core brand identity across all channels and applications.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-title">Measurability</div>
+                    <div class="benefit-text">Transforms subjective creative elements into quantifiable data that can be tracked, optimized, and improved over time.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔄</div>
+                    <div class="benefit-title">Repeatability</div>
+                    <div class="benefit-text">Creates reusable processes and frameworks that can be applied to new projects while maintaining quality and coherence.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <div class="benefit-title">Efficiency</div>
+                    <div class="benefit-text">Streamlines creative decision-making by providing clear guidelines and automated insights, reducing time and resources.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔗</div>
+                    <div class="benefit-title">Integration</div>
+                    <div class="benefit-text">Seamlessly connects with existing tools and workflows through APIs and standard export formats.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📈</div>
+                    <div class="benefit-title">Scalability</div>
+                    <div class="benefit-text">Supports growth from small projects to enterprise-level operations without losing coherence or quality.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Experience the Framework?</h2>
+            <p class="cta-text">Upload your creative assets and see how our four-layer framework transforms them into actionable systems.</p>
+            <a href="upload.html" class="cta-button">Upload Your Assets</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>Coherent Frameworks for Creative Intelligence & Operational Systems</p>
+            <p class="copyright">Copyright © 2026 Michael Grant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function toggleLayer(element) {
+            const isActive = element.classList.contains('active');
+            
+            // Close all layers
+            document.querySelectorAll('.layer-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Open clicked layer if it wasn't active
+            if (!isActive) {
+                element.classList.add('active');
+            }
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.layer-card, .benefit-card').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'all 0.6s ease';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>

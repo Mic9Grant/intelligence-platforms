@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Coherent Frameworks Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            padding: 20px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 20px 25px;
+            display: block;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-bottom-color: #667eea;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.3em;
+            color: #b8b8d1;
+            line-height: 1.8;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #667eea;
+        }
+
+        /* Hero Introduction */
+        .hero-intro {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 60px 50px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            border-left: 5px solid #667eea;
+        }
+
+        .hero-intro h2 {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 25px;
+        }
+
+        .hero-intro p {
+            font-size: 1.15em;
+            line-height: 1.9;
+            color: #d1d1e0;
+            margin-bottom: 20px;
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 60px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .content-card h3 {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .content-card p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #d1d1e0;
+            margin-bottom: 15px;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            margin-bottom: 60px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            margin-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 30px;
+            width: 15px;
+            height: 15px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid #0f0c29;
+        }
+
+        .timeline-year {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .timeline-content {
+            color: #d1d1e0;
+            line-height: 1.7;
+        }
+
+        /* Key Concepts Grid */
+        .concepts-section {
+            margin-bottom: 60px;
+        }
+
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            padding: 35px;
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .concept-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .concept-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .concept-description {
+            color: #d1d1e0;
+            line-height: 1.7;
+        }
+
+        /* Author Section */
+        .author-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            padding: 60px 50px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .author-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .author-name {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .author-description {
+            font-size: 1.2em;
+            color: #d1d1e0;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-bottom: 60px;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.08);
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #667eea;
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .faq-question-text {
+            font-size: 1.2em;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .faq-toggle {
+            font-size: 1.5em;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 30px 25px;
+            color: #d1d1e0;
+            line-height: 1.8;
+        }
+
+        /* Resources Section */
+        .resources-section {
+            margin-bottom: 60px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .resource-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .resource-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .resource-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+
+        .resource-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+
+        .resource-description {
+            color: #b8b8d1;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 50px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .contact-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .contact-section p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            background: white;
+            color: #667eea;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
+            border-top: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .copyright {
+            color: #8e8ea8;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 12, 41, 0.98);
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .page-header h1 {
+                font-size: 2.5em;
+            }
+
+            .hero-intro {
+                padding: 40px 25px;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .timeline-item {
+                margin-left: 10px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Coherent Frameworks</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="framework.html">Framework</a></li>
+                <li><a href="platform.html">Platform</a></li>
+                <li><a href="infrastructure.html">Infrastructure</a></li>
+                <li><a href="upload.html">Upload Assets</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>About Coherent Frameworks</h1>
+        <p>Understanding the methodology and vision behind creative intelligence systems</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Introduction -->
+        <div class="hero-intro animate-in">
+            <h2>What is a Coherent Framework?</h2>
+            <p>A coherent framework is a structured system in which ideas, rules, and components are logically connected so that each part supports and reinforces the others. It ensures that creativity, data, and decision-making are not isolated efforts but operate within a shared logic that produces consistent outcomes.</p>
+            <p>In a coherent framework, inputs lead to predictable transformations, and outputs can be evaluated, improved, and reused. This allows abstract concepts—such as identity, aesthetics, or emotion—to be translated into repeatable processes that function reliably across different contexts.</p>
+        </div>
+
+        <!-- Key Concepts -->
+        <div class="concepts-section">
+            <h2 class="section-title">Core Principles</h2>
+            <div class="concepts-grid">
+                <div class="concept-card">
+                    <div class="concept-icon">🎯</div>
+                    <h3 class="concept-title">Logical Integration</h3>
+                    <p class="concept-description">All components work together through consistent principles, ensuring every element supports the whole system rather than operating in isolation.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🔄</div>
+                    <h3 class="concept-title">Predictable Transformation</h3>
+                    <p class="concept-description">Inputs produce reliable, evaluable outputs that can be measured, refined, and optimized over time for continuous improvement.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">📈</div>
+                    <h3 class="concept-title">Scalable Repeatability</h3>
+                    <p class="concept-description">Processes function consistently across various contexts and applications, from small projects to enterprise-level operations.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">⚡</div>
+                    <h3 class="concept-title">Continuous Improvement</h3>
+                    <p class="concept-description">Outputs can be measured, analyzed, and refined through feedback loops that enhance system performance over time.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🧠</div>
+                    <h3 class="concept-title">Structured Intelligence</h3>
+                    <p class="concept-description">Creative intuition is converted into operational systems that can be analyzed, replicated, and improved systematically.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="concept-icon">🌐</div>
+                    <h3 class="concept-title">Cross-Context Functionality</h3>
+                    <p class="concept-description">Frameworks operate reliably across different platforms, audiences, and use cases while maintaining core coherence.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Platform Evolution -->
+        <div class="content-section">
+            <h2 class="section-title">The Creative Intelligence Platform</h2>
+            <div class="content-card">
+                <h3>Vision & Purpose</h3>
+                <p>The Creative Intelligence Platform is designed for artists, designers, and brands who want to transform their creative work into structured, operational systems. It accepts creative assets—logos, color palettes, music chords, character sketches, or written themes—and transforms them into actionable systems.</p>
+                <p>The platform does not just store files; it analyzes them and generates structured outputs such as brand guidelines, emotional tone maps, monetization strategies, and audience alignment insights. The goal is to convert creative intuition into operational clarity that can be applied across marketing, product design, and digital experiences.</p>
+            </div>
+            <div class="content-card">
+                <h3>Four-Layer Architecture</h3>
+                <p>The framework operates through four interdependent layers: the Input Layer standardizes diverse creative materials; the Interpretation Layer extracts meaning and patterns; the Synthesis Layer combines insights into unified frameworks; and the Application Layer delivers results through practical interfaces and integrations.</p>
+                <p>This architecture ensures that creativity moves from expression to execution without losing intent or coherence, enabling abstract concepts to become functional, measurable systems.</p>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+            <h2 class="section-title">Development Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">Initial conception of coherent frameworks as a methodology for translating creative expression into structured systems. White paper drafted outlining core principles and theoretical foundation.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">Development of the four-layer framework architecture. Prototyping of infrastructure components and testing pattern recognition algorithms for creative asset analysis.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2025</div>
+                    <div class="timeline-content">Integration of intelligence infrastructure with machine learning models. Expansion of multi-modal analysis capabilities to process visual, audio, and textual data simultaneously.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2026</div>
+                    <div class="timeline-content">Launch of the Creative Intelligence Platform with full functionality across all infrastructure layers. Continuous refinement based on user feedback and real-world applications.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span class="faq-question-text">What types of creative assets can I upload?</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        The platform accepts a wide range of creative assets including visual designs (logos, images, graphics), audio files (music, sound effects, voice), text documents (brand messaging, themes, manifestos), video content, color palettes, and mixed media. Each asset type is processed through specialized analysis appropriate to its format.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span class="faq-question-text">How does the platform analyze creative work?</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        The platform uses a combination of machine learning models, pattern recognition algorithms, and rule-based systems to extract meaning from creative assets. For visual assets, it analyzes color, composition, and style. For audio, it examines tempo, chord progressions, and emotional tone. Text is processed for sentiment, themes, and linguistic patterns. All insights are synthesized into a coherent framework.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span class="faq-question-text">Who can benefit from using this platform?</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        The platform is designed for artists seeking to understand their creative identity, designers building brand systems for clients, marketing teams ensuring campaign consistency, product developers maintaining design coherence, and any organization that wants to transform creative intuition into measurable, repeatable processes.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span class="faq-question-text">What makes this different from traditional design tools?</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Traditional design tools help you create assets. This platform analyzes existing assets to extract underlying patterns, generate strategic insights, and create operational frameworks. It's not about making things—it's about understanding what you've made and translating that understanding into actionable systems for consistency, scaling, and strategic application.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span class="faq-question-text">Is my creative work secure on the platform?</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes. All data is encrypted at rest using AES-256 and in transit using TLS 1.3. We implement role-based access control, multi-factor authentication, and comprehensive audit logging. The platform is GDPR and CCPA compliant with regular third-party security audits. Your creative assets remain your intellectual property.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span class="faq-question-text">Can I integrate the platform with my existing tools?</span>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes. The platform provides APIs and connectors for integration with design tools (Figma, Adobe Creative Cloud), marketing platforms (HubSpot, Mailchimp), project management tools, and e-commerce systems. Custom integrations can be built using our comprehensive API documentation.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="resources-section">
+            <h2 class="section-title">Resources & Documentation</h2>
+            <div class="resources-grid">
+                <div class="resource-card" onclick="alert('White Paper PDF would be downloaded')">
+                    <div class="resource-icon">📄</div>
+                    <h3 class="resource-title">White Paper</h3>
+                    <p class="resource-description">Complete theoretical foundation and methodology documentation</p>
+                </div>
+                <div class="resource-card" onclick="alert('API Documentation would open')">
+                    <div class="resource-icon">💻</div>
+                    <h3 class="resource-title">API Documentation</h3>
+                    <p class="resource-description">Technical guides for developers and integrations</p>
+                </div>
+                <div class="resource-card" onclick="alert('User Guide would open')">
+                    <div class="resource-icon">📚</div>
+                    <h3 class="resource-title">User Guide</h3>
+                    <p class="resource-description">Step-by-step tutorials and best practices</p>
+                </div>
+                <div class="resource-card" onclick="alert('Case Studies would open')">
+                    <div class="resource-icon">📊</div>
+                    <h3 class="resource-title">Case Studies</h3>
+                    <p class="resource-description">Real-world applications and success stories</p>
+                </div>
+                <div class="resource-card" onclick="alert('Video Tutorials would open')">
+                    <div class="resource-icon">🎥</div>
+                    <h3 class="resource-title">Video Tutorials</h3>
+                    <p class="resource-description">Visual guides and platform walkthroughs</p>
+                </div>
+                <div class="resource-card" onclick="alert('Community Forum would open')">
+                    <div class="resource-icon">💬</div>
+                    <h3 class="resource-title">Community</h3>
+                    <p class="resource-description">Connect with other users and share insights</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Author Section -->
+        <div class="author-section">
+            <h2>About the Author</h2>
+            <p class="author-name">Michael Grant</p>
+            <p class="author-description">Michael Grant specializes in the development of coherent frameworks for creative intelligence and operational systems. His work focuses on bridging the gap between creative expression and functional execution, enabling artists, designers, and brands to transform intuitive creative work into structured, measurable systems that can be scaled and optimized.</p>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h2>Get Started Today</h2>
+            <p>Transform your creative assets into actionable intelligence systems</p>
+            <div class="contact-buttons">
+                <a href="upload.html" class="contact-btn">Upload Your Assets</a>
+                <a href="platform.html" class="contact-btn">Explore the Platform</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>Coherent Frameworks for Creative Intelligence & Operational Systems</p>
+            <p class="copyright">Copyright © 2026 Michael Grant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function toggleFAQ(element) {
+            const isActive = element.classList.contains('active');
+            
+            // Close all FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked FAQ if it wasn't active
+            if (!isActive) {
+                element.classList.add('active');
+            }
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.concept-card, .content-card, .resource-card, .timeline-item').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'all 0.6s ease';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>

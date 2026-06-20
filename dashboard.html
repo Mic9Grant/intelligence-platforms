@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Coherent Frameworks Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            padding: 20px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 20px 25px;
+            display: block;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-bottom-color: #667eea;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            padding: 40px 20px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .data-status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: none;
+        }
+
+        .data-status.active {
+            display: block;
+        }
+
+        .data-status.live {
+            background: rgba(46, 204, 113, 0.2);
+            border: 2px solid #2ecc71;
+            color: #2ecc71;
+        }
+
+        .data-status.demo {
+            background: rgba(241, 196, 15, 0.2);
+            border: 2px solid #f1c40f;
+            color: #f1c40f;
+        }
+
+        .header-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: 2px solid #667eea;
+            background: rgba(102, 126, 234, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .header-btn:hover {
+            background: rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .header-btn.print {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #764ba2;
+        }
+
+        /* Print Styles */
+        #print-title {
+            display: none;
+        }
+
+        @media print {
+            #print-title {
+                display: block !important;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+
+            nav, .mobile-menu-btn, .header-actions, .export-section, footer {
+                display: none !important;
+            }
+
+            .dashboard-header {
+                page-break-after: avoid;
+            }
+
+            .header-title {
+                color: #667eea !important;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            .page-header h1 {
+                color: #667eea;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .section-title {
+                page-break-after: avoid;
+                margin-top: 30px;
+            }
+
+            .overview-section, .analysis-section, .insights-section, 
+            .framework-section {
+                page-break-inside: avoid;
+                margin-bottom: 40px;
+            }
+
+            .overview-card, .analysis-card, .insight-item, 
+            .framework-content, .framework-item {
+                background: white !important;
+                border: 1px solid #ddd !important;
+                color: black !important;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+            }
+
+            .card-label, .card-change, .analysis-content, 
+            .insight-text, .framework-item-desc {
+                color: #333 !important;
+            }
+
+            .section-title, .analysis-title, .insight-title,
+            .framework-item-title, .card-label {
+                color: #667eea !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .card-value {
+                color: #000 !important;
+            }
+
+            .bar-fill {
+                background: #667eea !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .bar-container {
+                background: #e0e0e0 !important;
+            }
+
+            .emotion-circle {
+                background: #667eea !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .emotion-label {
+                color: #333 !important;
+            }
+
+            .color-swatch {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .framework-tabs {
+                display: none;
+            }
+
+            .framework-content {
+                display: block !important;
+            }
+
+            .insights-container {
+                background: white !important;
+            }
+
+            .insight-icon, .analysis-icon {
+                filter: grayscale(100%);
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Overview Cards */
+        .overview-section {
+            margin-bottom: 40px;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .overview-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .overview-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .overview-card:nth-child(2) {
+            border-left-color: #764ba2;
+        }
+
+        .overview-card:nth-child(3) {
+            border-left-color: #2ecc71;
+        }
+
+        .overview-card:nth-child(4) {
+            border-left-color: #e74c3c;
+        }
+
+        .card-label {
+            font-size: 0.95em;
+            color: #b8b8d1;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .card-change {
+            font-size: 0.9em;
+            color: #2ecc71;
+        }
+
+        .card-change.negative {
+            color: #e74c3c;
+        }
+
+        /* Analysis Results */
+        .analysis-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 25px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-icon {
+            font-size: 2.5em;
+        }
+
+        .analysis-title {
+            font-size: 1.4em;
+            color: #fff;
+        }
+
+        .analysis-content {
+            color: #d1d1e0;
+            line-height: 1.7;
+        }
+
+        .metric-bar {
+            margin: 15px 0;
+        }
+
+        .metric-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #b8b8d1;
+            font-size: 0.95em;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        /* Insights Section */
+        .insights-section {
+            margin-bottom: 40px;
+        }
+
+        .insights-container {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .insight-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .insight-icon {
+            font-size: 2em;
+            min-width: 40px;
+        }
+
+        .insight-content {
+            flex: 1;
+        }
+
+        .insight-title {
+            font-size: 1.2em;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .insight-text {
+            color: #d1d1e0;
+            line-height: 1.6;
+        }
+
+        /* Brand Framework */
+        .framework-section {
+            margin-bottom: 40px;
+        }
+
+        .framework-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .framework-tab {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .framework-tab:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .framework-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        .framework-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .framework-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .framework-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .framework-item-title {
+            font-size: 1.1em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .framework-item-value {
+            color: #fff;
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .framework-item-desc {
+            color: #b8b8d1;
+            font-size: 0.9em;
+        }
+
+        /* Color Palette Display */
+        .color-palette {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-end;
+            padding: 8px;
+            color: #fff;
+            font-size: 0.8em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        /* Emotional Tone Chart */
+        .emotion-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .emotion-item {
+            text-align: center;
+        }
+
+        .emotion-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+
+        .emotion-label {
+            color: #b8b8d1;
+            font-size: 1em;
+        }
+
+        /* Export Section */
+        .export-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .export-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .export-btn {
+            padding: 15px 35px;
+            border-radius: 25px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .export-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+            border-top: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .copyright {
+            color: #8e8ea8;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 12, 41, 0.98);
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .header-title {
+                font-size: 2em;
+            }
+
+            .header-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .data-status {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Coherent Frameworks</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="framework.html">Framework</a></li>
+                <li><a href="platform.html">Platform</a></li>
+                <li><a href="infrastructure.html">Infrastructure</a></li>
+                <li><a href="upload.html">Upload Assets</a></li>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="header-title">Analytics Dashboard</h1>
+            <div class="header-actions">
+                <div class="data-status" id="dataStatus">
+                    <span id="statusText">● Demo Data</span>
+                </div>
+                <button class="header-btn" onclick="refreshData()">↻ Refresh</button>
+                <button class="header-btn print" onclick="printReport()">🖨️ Print Report</button>
+                <button class="header-btn" onclick="window.location.href='upload.html'">+ Upload More</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Overview Cards -->
+        <div class="overview-section">
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="card-label">Total Assets</div>
+                    <div class="card-value">24</div>
+                    <div class="card-change">↑ 8 this week</div>
+                </div>
+                <div class="overview-card">
+                    <div class="card-label">Brand Consistency</div>
+                    <div class="card-value">94%</div>
+                    <div class="card-change">↑ +6% improvement</div>
+                </div>
+                <div class="overview-card">
+                    <div class="card-label">Audience Alignment</div>
+                    <div class="card-value">88%</div>
+                    <div class="card-change">↑ +3% this month</div>
+                </div>
+                <div class="overview-card">
+                    <div class="card-label">Analysis Complete</div>
+                    <div class="card-value">18</div>
+                    <div class="card-change">6 in progress</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="analysis-section">
+            <h2 class="section-title">Framework Analysis Results</h2>
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <div class="analysis-header">
+                        <div class="analysis-icon">🎨</div>
+                        <div class="analysis-title">Visual Identity</div>
+                    </div>
+                    <div class="analysis-content">
+                        <p style="margin-bottom: 20px;">Your visual assets demonstrate strong coherence with modern, professional aesthetics. Color palette shows high consistency across all materials.</p>
+                        
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Color Consistency</span>
+                                <span>96%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 96%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Typography Alignment</span>
+                                <span>91%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 91%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Design Coherence</span>
+                                <span>94%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 94%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="analysis-header">
+                        <div class="analysis-icon">💭</div>
+                        <div class="analysis-title">Emotional Tone</div>
+                    </div>
+                    <div class="analysis-content">
+                        <p style="margin-bottom: 20px;">Analysis reveals a professional, innovative, and trustworthy emotional signature. Strong alignment with target audience expectations.</p>
+                        
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Professionalism</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Innovation</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 88%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Trustworthiness</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="analysis-header">
+                        <div class="analysis-icon">🎯</div>
+                        <div class="analysis-title">Audience Resonance</div>
+                    </div>
+                    <div class="analysis-content">
+                        <p style="margin-bottom: 20px;">Your creative assets resonate strongly with tech-savvy professionals aged 25-45. High engagement potential across digital platforms.</p>
+                        
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Target Match</span>
+                                <span>89%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 89%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Engagement Potential</span>
+                                <span>86%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 86%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-bar">
+                            <div class="metric-label">
+                                <span>Cultural Relevance</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategic Insights -->
+        <div class="insights-section">
+            <h2 class="section-title">Strategic Insights & Recommendations</h2>
+            <div class="insights-container">
+                <div class="insight-item">
+                    <div class="insight-icon">✨</div>
+                    <div class="insight-content">
+                        <div class="insight-title">Visual Consistency Opportunity</div>
+                        <div class="insight-text">Your logo usage is strong, but secondary graphics could benefit from more consistent color application. Consider creating a style guide for illustrative elements.</div>
+                    </div>
+                </div>
+
+                <div class="insight-item">
+                    <div class="insight-icon">📈</div>
+                    <div class="insight-content">
+                        <div class="insight-title">Audience Expansion Potential</div>
+                        <div class="insight-text">Your current brand positioning resonates with 25-45 age group. With minor adjustments to tone and visual style, you could effectively reach 18-25 demographic as well.</div>
+                    </div>
+                </div>
+
+                <div class="insight-item">
+                    <div class="insight-icon">💡</div>
+                    <div class="insight-content">
+                        <div class="insight-title">Emotional Tone Enhancement</div>
+                        <div class="insight-text">Consider incorporating more warm tones and approachable imagery to balance the professional aesthetic. This could increase relatability without sacrificing credibility.</div>
+                    </div>
+                </div>
+
+                <div class="insight-item">
+                    <div class="insight-icon">🎵</div>
+                    <div class="insight-content">
+                        <div class="insight-title">Audio Branding Opportunity</div>
+                        <div class="insight-text">Your visual identity is strong. Developing a sonic brand identity (audio logo, signature sound) could create powerful multi-sensory brand recognition.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brand Framework -->
+        <div class="framework-section">
+            <h2 class="section-title">Generated Brand Framework</h2>
+            <div class="framework-tabs">
+                <div class="framework-tab active" onclick="switchTab(this, 'identity')">Brand Identity</div>
+                <div class="framework-tab" onclick="switchTab(this, 'colors')">Color Palette</div>
+                <div class="framework-tab" onclick="switchTab(this, 'emotions')">Emotional Map</div>
+                <div class="framework-tab" onclick="switchTab(this, 'positioning')">Market Position</div>
+            </div>
+
+            <!-- Brand Identity Tab -->
+            <div class="framework-content active" id="identity">
+                <div class="framework-grid">
+                    <div class="framework-item">
+                        <div class="framework-item-title">Brand Archetype</div>
+                        <div class="framework-item-value">The Innovator</div>
+                        <div class="framework-item-desc">Forward-thinking, creative, and transformative</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Primary Emotion</div>
+                        <div class="framework-item-value">Trust & Innovation</div>
+                        <div class="framework-item-desc">Balancing reliability with cutting-edge</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Voice & Tone</div>
+                        <div class="framework-item-value">Professional yet Approachable</div>
+                        <div class="framework-item-desc">Expert guidance with human warmth</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Target Audience</div>
+                        <div class="framework-item-value">Tech Professionals 25-45</div>
+                        <div class="framework-item-desc">Innovation-focused decision makers</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Core Values</div>
+                        <div class="framework-item-value">Excellence, Innovation, Clarity</div>
+                        <div class="framework-item-desc">What drives your brand forward</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Differentiation</div>
+                        <div class="framework-item-value">Systematic Creativity</div>
+                        <div class="framework-item-desc">Structure meets artistic vision</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Palette Tab -->
+            <div class="framework-content" id="colors">
+                <h3 style="margin-bottom: 20px; color: #b8b8d1;">Primary Color Palette</h3>
+                <div class="color-palette">
+                    <div class="color-swatch" style="background: #667eea;">#667eea</div>
+                    <div class="color-swatch" style="background: #764ba2;">#764ba2</div>
+                    <div class="color-swatch" style="background: #2ecc71;">#2ecc71</div>
+                    <div class="color-swatch" style="background: #3498db;">#3498db</div>
+                    <div class="color-swatch" style="background: #e74c3c;">#e74c3c</div>
+                </div>
+                <h3 style="margin: 30px 0 20px; color: #b8b8d1;">Secondary/Accent Colors</h3>
+                <div class="color-palette">
+                    <div class="color-swatch" style="background: #9b59b6;">#9b59b6</div>
+                    <div class="color-swatch" style="background: #1abc9c;">#1abc9c</div>
+                    <div class="color-swatch" style="background: #f39c12;">#f39c12</div>
+                    <div class="color-swatch" style="background: #34495e; color: #ecf0f1;">#34495e</div>
+                    <div class="color-swatch" style="background: #ecf0f1; color: #2c3e50;">#ecf0f1</div>
+                </div>
+                <div style="margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                    <h4 style="color: #667eea; margin-bottom: 15px;">Color Psychology Analysis</h4>
+                    <p style="color: #d1d1e0; line-height: 1.7;">Your primary palette combines trust (blue tones) with creativity (purple), creating a balance between professionalism and innovation. The accent colors add energy and warmth while maintaining overall coherence.</p>
+                </div>
+            </div>
+
+            <!-- Emotional Map Tab -->
+            <div class="framework-content" id="emotions">
+                <div class="emotion-chart">
+                    <div class="emotion-item">
+                        <div class="emotion-circle">92%</div>
+                        <div class="emotion-label">Professional</div>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-circle">88%</div>
+                        <div class="emotion-label">Innovative</div>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-circle">95%</div>
+                        <div class="emotion-label">Trustworthy</div>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-circle">78%</div>
+                        <div class="emotion-label">Approachable</div>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-circle">85%</div>
+                        <div class="emotion-label">Sophisticated</div>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-circle">82%</div>
+                        <div class="emotion-label">Modern</div>
+                    </div>
+                </div>
+                <div style="margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                    <h4 style="color: #667eea; margin-bottom: 15px;">Emotional Signature Summary</h4>
+                    <p style="color: #d1d1e0; line-height: 1.7;">Your brand projects a strong professional and trustworthy image while maintaining an innovative edge. The emotional tone is well-balanced, appealing to audiences seeking both reliability and forward-thinking solutions. Consider increasing approachability scores to broaden appeal.</p>
+                </div>
+            </div>
+
+            <!-- Market Position Tab -->
+            <div class="framework-content" id="positioning">
+                <div class="framework-grid">
+                    <div class="framework-item">
+                        <div class="framework-item-title">Market Category</div>
+                        <div class="framework-item-value">Creative Technology</div>
+                        <div class="framework-item-desc">Innovation tools & systems</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Competitive Position</div>
+                        <div class="framework-item-value">Premium/Professional</div>
+                        <div class="framework-item-desc">High-value solution provider</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Key Differentiator</div>
+                        <div class="framework-item-value">Systematic Approach</div>
+                        <div class="framework-item-desc">Structure meets creativity</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Growth Opportunity</div>
+                        <div class="framework-item-value">Enterprise Expansion</div>
+                        <div class="framework-item-desc">Scale to larger organizations</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Pricing Strategy</div>
+                        <div class="framework-item-value">Value-Based Premium</div>
+                        <div class="framework-item-desc">Quality over cost leadership</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Distribution Channels</div>
+                        <div class="framework-item-value">Digital-First, Direct</div>
+                        <div class="framework-item-desc">SaaS model with consulting</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+            <h2 class="export-title">Export Your Framework</h2>
+            <p style="color: #b8b8d1; margin-bottom: 25px;">Download your complete brand framework and analysis results</p>
+            <div class="export-buttons">
+                <button class="export-btn" onclick="exportPDF()">
+                    <span>📄</span> Brand Guidelines PDF
+                </button>
+                <button class="export-btn" onclick="exportJSON()">
+                    <span>💾</span> Data Export (JSON)
+                </button>
+                <button class="export-btn" onclick="exportReport()">
+                    <span>📊</span> Full Analysis Report
+                </button>
+                <button class="export-btn" onclick="exportPalette()">
+                    <span>🎨</span> Color Palette (.ase)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>Coherent Frameworks for Creative Intelligence & Operational Systems</p>
+            <p class="copyright">Copyright © 2026 Michael Grant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let uploadedAssets = [];
+        
+        // Load uploaded assets from localStorage
+        function loadUploadedAssets() {
+            const stored = localStorage.getItem('uploadedAssets');
+            if (stored) {
+                uploadedAssets = JSON.parse(stored);
+                updateDashboardWithRealData();
+            }
+        }
+
+        // Update dashboard with real uploaded data
+        function updateDashboardWithRealData() {
+            if (uploadedAssets.length === 0) {
+                // Show demo data status
+                const statusEl = document.getElementById('dataStatus');
+                const statusText = document.getElementById('statusText');
+                statusEl.classList.add('active', 'demo');
+                statusEl.classList.remove('live');
+                statusText.textContent = '● Demo Data';
+                return;
+            }
+
+            // Show live data status
+            const statusEl = document.getElementById('dataStatus');
+            const statusText = document.getElementById('statusText');
+            statusEl.classList.add('active', 'live');
+            statusEl.classList.remove('demo');
+            statusText.textContent = `● Live Data (${uploadedAssets.length} assets)`;
+
+            // Update overview cards
+            document.querySelector('.overview-grid .overview-card:nth-child(1) .card-value').textContent = uploadedAssets.length;
+            document.querySelector('.overview-grid .overview-card:nth-child(1) .card-change').textContent = `↑ ${uploadedAssets.length} uploaded`;
+
+            // Calculate file type distribution
+            const fileTypes = {};
+            const categories = {};
+            let totalSize = 0;
+
+            uploadedAssets.forEach(asset => {
+                const mainType = asset.type ? asset.type.split('/')[0] : 'other';
+                fileTypes[mainType] = (fileTypes[mainType] || 0) + 1;
+                categories[asset.category] = (categories[asset.category] || 0) + 1;
+                totalSize += asset.sizeBytes || 0;
+            });
+
+            // Update analysis results based on file types
+            updateVisualAnalysis(fileTypes, categories);
+            updateEmotionalAnalysis(fileTypes, categories);
+            updateAudienceAnalysis(categories);
+            updateInsights(fileTypes, categories);
+            updateBrandFramework(fileTypes, categories);
+        }
+
+        function updateVisualAnalysis(fileTypes, categories) {
+            const hasVisual = fileTypes.image || categories.visual;
+            if (hasVisual) {
+                const visualCount = (fileTypes.image || 0) + (categories.visual || 0);
+                const consistency = Math.min(95, 75 + (visualCount * 3));
+                
+                document.querySelector('.analysis-card:nth-child(1) .analysis-content p').textContent = 
+                    `Your ${visualCount} visual asset${visualCount > 1 ? 's' : ''} demonstrate ${consistency > 85 ? 'strong' : 'good'} coherence with ${consistency > 90 ? 'modern, professional' : 'consistent'} aesthetics. Color palette shows ${consistency > 85 ? 'high' : 'good'} consistency across materials.`;
+                
+                document.querySelectorAll('.analysis-card:nth-child(1) .bar-fill')[0].style.width = consistency + '%';
+                document.querySelectorAll('.analysis-card:nth-child(1) .metric-label span:last-child')[0].textContent = consistency + '%';
+            }
+        }
+
+        function updateEmotionalAnalysis(fileTypes, categories) {
+            const hasAudio = fileTypes.audio || categories.audio;
+            const hasVisual = fileTypes.image || categories.visual;
+            
+            let tone = 'professional and trustworthy';
+            if (hasAudio && hasVisual) {
+                tone = 'multi-sensory, professional, and engaging';
+            } else if (hasAudio) {
+                tone = 'emotive, dynamic, and resonant';
+            } else if (hasVisual) {
+                tone = 'visual, professional, and cohesive';
+            }
+            
+            document.querySelector('.analysis-card:nth-child(2) .analysis-content p').textContent = 
+                `Analysis reveals a ${tone} emotional signature across your ${uploadedAssets.length} uploaded asset${uploadedAssets.length > 1 ? 's' : ''}. Strong alignment with target audience expectations.`;
+        }
+
+        function updateAudienceAnalysis(categories) {
+            const categoryCount = Object.keys(categories).length;
+            const diversity = categoryCount > 2 ? 'diverse' : categoryCount > 1 ? 'multi-faceted' : 'focused';
+            
+            document.querySelector('.analysis-card:nth-child(3) .analysis-content p').textContent = 
+                `Your ${diversity} creative assets resonate with your target audience. Your ${uploadedAssets.length} asset${uploadedAssets.length > 1 ? 's' : ''} show${uploadedAssets.length === 1 ? 's' : ''} ${categoryCount > 2 ? 'broad appeal potential' : 'clear focus'} across digital platforms.`;
+        }
+
+        function updateInsights(fileTypes, categories) {
+            const insights = document.querySelectorAll('.insight-item');
+            
+            // Insight 1 - Based on visual assets
+            if (fileTypes.image || categories.visual) {
+                insights[0].querySelector('.insight-text').textContent = 
+                    `Your visual assets show strong potential. With ${(fileTypes.image || 0) + (categories.visual || 0)} visual file${(fileTypes.image || 0) + (categories.visual || 0) > 1 ? 's' : ''}, focus on maintaining consistent color application and style guidelines across all materials.`;
+            }
+
+            // Insight 2 - Based on variety
+            const categoryCount = Object.keys(categories).length;
+            if (categoryCount > 2) {
+                insights[1].querySelector('.insight-text').textContent = 
+                    `Your ${categoryCount} different asset categories demonstrate versatility. This multi-faceted approach allows for broader audience reach while maintaining brand coherence.`;
+            } else if (categoryCount === 1) {
+                insights[1].querySelector('.insight-text').textContent = 
+                    `You've focused on ${getCategoryName(Object.keys(categories)[0])}. Consider adding complementary asset types (audio, text, or visual) to create a more comprehensive brand framework.`;
+            }
+
+            // Insight 3 - Based on audio/visual mix
+            if (fileTypes.audio && fileTypes.image) {
+                insights[2].querySelector('.insight-text').textContent = 
+                    `Excellent! You've uploaded both audio and visual assets. This multi-sensory approach creates powerful brand recognition across different touchpoints and platforms.`;
+            } else if (!fileTypes.audio && (fileTypes.image || categories.visual)) {
+                insights[2].querySelector('.insight-text').textContent = 
+                    `Consider developing an audio brand identity (signature sound, audio logo) to complement your strong visual presence. Multi-sensory branding significantly increases recognition.`;
+            }
+
+            // Insight 4 - Based on total assets
+            if (uploadedAssets.length >= 5) {
+                insights[3].querySelector('.insight-text').textContent = 
+                    `With ${uploadedAssets.length} assets uploaded, you have substantial material for comprehensive analysis. This volume enables deeper pattern recognition and more accurate framework generation.`;
+            } else if (uploadedAssets.length < 3) {
+                insights[3].querySelector('.insight-text').textContent = 
+                    `For more comprehensive insights, consider uploading additional assets. More materials enable deeper analysis of patterns, consistency, and brand identity elements.`;
+            }
+        }
+
+        function updateBrandFramework(fileTypes, categories) {
+            // Update Brand Identity based on actual uploads
+            const hasAudio = fileTypes.audio || categories.audio;
+            const hasVisual = fileTypes.image || categories.visual;
+            const hasText = fileTypes.text || categories.text;
+            
+            // Determine archetype
+            let archetype = 'The Professional';
+            if (hasAudio && hasVisual) archetype = 'The Innovator';
+            else if (hasAudio) archetype = 'The Performer';
+            else if (hasVisual) archetype = 'The Creator';
+            
+            document.querySelector('#identity .framework-item:nth-child(1) .framework-item-value').textContent = archetype;
+            
+            // Update primary emotion based on content
+            let emotion = 'Trust & Clarity';
+            if (hasAudio && hasVisual) emotion = 'Innovation & Engagement';
+            else if (hasAudio) emotion = 'Energy & Connection';
+            else if (hasVisual) emotion = 'Visual Appeal & Trust';
+            
+            document.querySelector('#identity .framework-item:nth-child(2) .framework-item-value').textContent = emotion;
+            
+            // Update target audience
+            const categoryCount = Object.keys(categories).length;
+            let audience = 'General Audience';
+            if (categoryCount > 2) audience = 'Multi-Demographic Appeal';
+            else if (hasAudio && hasVisual) audience = 'Creative Professionals 25-45';
+            else if (hasVisual) audience = 'Visual-Oriented Professionals';
+            
+            document.querySelector('#identity .framework-item:nth-child(4) .framework-item-value').textContent = audience;
+            
+            // Update differentiation
+            let diff = 'Focused Approach';
+            if (categoryCount > 2) diff = 'Multi-Modal Excellence';
+            else if (hasAudio && hasVisual) diff = 'Sensory Integration';
+            
+            document.querySelector('#identity .framework-item:nth-child(6) .framework-item-value').textContent = diff;
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'visual': 'Visual Assets',
+                'audio': 'Audio Files',
+                'text': 'Text Documents',
+                'video': 'Video Content',
+                'color': 'Color Palettes',
+                'mixed': 'Mixed Media'
+            };
+            return names[category] || category;
+        }
+
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function switchTab(element, tabId) {
+            // Update tab buttons
+            document.querySelectorAll('.framework-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.framework-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function refreshData() {
+            loadUploadedAssets();
+            
+            // Show visual feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '↻ Refreshing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+                
+                if (uploadedAssets.length > 0) {
+                    alert(`Dashboard refreshed!\n\n${uploadedAssets.length} asset${uploadedAssets.length > 1 ? 's' : ''} loaded and analyzed.`);
+                } else {
+                    alert('Dashboard refreshed!\n\nNo assets found. Upload assets on the Upload page to see real-time analysis.');
+                }
+            }, 800);
+        }
+
+        function printReport() {
+            // Show all framework content sections for printing
+            const allFrameworkContent = document.querySelectorAll('.framework-content');
+            const originalDisplay = [];
+            
+            // Store original display states and show all
+            allFrameworkContent.forEach((content, index) => {
+                originalDisplay[index] = content.style.display;
+                content.style.display = 'block';
+                content.classList.add('active');
+            });
+
+            // Add print title
+            const printTitle = document.createElement('div');
+            printTitle.id = 'print-title';
+            printTitle.innerHTML = `
+                <div style="text-align: center; padding: 20px; border-bottom: 2px solid #667eea; margin-bottom: 30px;">
+                    <h1 style="color: #667eea; font-size: 2.5em; margin-bottom: 10px;">Analytics Dashboard Report</h1>
+                    <p style="color: #666; font-size: 1.2em;">Coherent Frameworks Platform</p>
+                    <p style="color: #999; margin-top: 10px;">Generated: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}</p>
+                </div>
+            `;
+            document.body.insertBefore(printTitle, document.body.firstChild);
+
+            // Trigger print dialog
+            window.print();
+
+            // Restore original display states after printing
+            setTimeout(() => {
+                allFrameworkContent.forEach((content, index) => {
+                    if (originalDisplay[index] !== 'block') {
+                        content.style.display = originalDisplay[index];
+                        content.classList.remove('active');
+                    }
+                });
+                // Remove print title
+                const titleElement = document.getElementById('print-title');
+                if (titleElement) {
+                    titleElement.remove();
+                }
+            }, 1000);
+        }
+
+        function exportPDF() {
+            alert('Generating Brand Guidelines PDF...\n\nThis would create a comprehensive PDF document with:\n- Logo usage guidelines\n- Color palette specifications\n- Typography system\n- Brand voice & tone\n- Visual examples');
+        }
+
+        function exportJSON() {
+            alert('Exporting data to JSON...\n\nThis would create a structured JSON file with all analysis data and metrics for integration with other tools.');
+        }
+
+        function exportReport() {
+            alert('Generating Full Analysis Report...\n\nThis would create a detailed report including:\n- Complete framework analysis\n- Strategic recommendations\n- Performance metrics\n- Audience insights');
+        }
+
+        function exportPalette() {
+            alert('Exporting Color Palette...\n\nThis would generate an Adobe Swatch Exchange (.ase) file compatible with Photoshop, Illustrator, and other design tools.');
+        }
+
+        // Animate progress bars on page load
+        window.addEventListener('load', () => {
+            // Load uploaded assets first
+            loadUploadedAssets();
+            
+            // Show data status indicator
+            document.getElementById('dataStatus').classList.add('active');
+            if (uploadedAssets.length === 0) {
+                document.getElementById('dataStatus').classList.add('demo');
+                document.getElementById('statusText').textContent = '● Demo Data';
+            }
+            
+            // Then animate progress bars
+            setTimeout(() => {
+                const bars = document.querySelectorAll('.bar-fill');
+                bars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 300);
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

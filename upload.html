@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Assets - Coherent Frameworks Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            padding: 20px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 20px 25px;
+            display: block;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-bottom-color: #667eea;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.3em;
+            color: #b8b8d1;
+            line-height: 1.8;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Workflow Steps */
+        .workflow-steps {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .step-text {
+            color: #b8b8d1;
+            font-size: 1.1em;
+        }
+
+        .step-arrow {
+            color: #667eea;
+            font-size: 1.5em;
+        }
+
+        /* Upload Area */
+        .upload-section {
+            margin-bottom: 60px;
+        }
+
+        .upload-zone {
+            background: rgba(255, 255, 255, 0.08);
+            border: 3px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 20px;
+            padding: 80px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .upload-title {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .upload-description {
+            font-size: 1.2em;
+            color: #b8b8d1;
+            margin-bottom: 30px;
+        }
+
+        .upload-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .supported-formats {
+            margin-top: 30px;
+            color: #8e8ea8;
+            font-size: 0.95em;
+        }
+
+        /* Asset Category Selection */
+        .category-section {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+        }
+
+        .category-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .category-card.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        .category-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .category-name {
+            font-size: 1.1em;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .category-desc {
+            font-size: 0.9em;
+            color: #b8b8d1;
+        }
+
+        /* Upload Progress */
+        .progress-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+        }
+
+        .progress-section.active {
+            display: block;
+        }
+
+        .progress-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .progress-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-filename {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .progress-status {
+            color: #667eea;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        /* Uploaded Files Display */
+        .uploaded-section {
+            display: none;
+            margin-bottom: 60px;
+        }
+
+        .uploaded-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #667eea;
+        }
+
+        .uploaded-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .file-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            animation: slideIn 0.5s ease;
+        }
+
+        .file-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .file-preview {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+        }
+
+        .file-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-info {
+            padding: 20px;
+        }
+
+        .file-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #b8b8d1;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .file-category {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: #667eea;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .file-action-btn {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .file-action-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .file-action-btn.delete {
+            color: #e74c3c;
+            border-color: rgba(231, 76, 60, 0.5);
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .file-action-btn.delete:hover {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: #e74c3c;
+        }
+
+        /* Analysis Button */
+        .analyze-section {
+            display: none;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .analyze-section.active {
+            display: block;
+        }
+
+        .analyze-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 60px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .analyze-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Loading Modal */
+        .loading-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-modal.active {
+            display: flex;
+        }
+
+        .loading-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 50px 60px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            border: 2px solid #667eea;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            border: 5px solid rgba(102, 126, 234, 0.3);
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .loading-steps {
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .loading-step {
+            padding: 12px 0;
+            color: #b8b8d1;
+            font-size: 1.05em;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .loading-step.active {
+            opacity: 1;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .loading-step.complete {
+            opacity: 1;
+            color: #2ecc71;
+        }
+
+        .loading-step::before {
+            content: '○ ';
+            margin-right: 10px;
+        }
+
+        .loading-step.active::before {
+            content: '◉ ';
+            color: #667eea;
+        }
+
+        .loading-step.complete::before {
+            content: '✓ ';
+            color: #2ecc71;
+        }
+
+        /* File Viewer Modal */
+        .file-viewer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .file-viewer-modal.active {
+            display: flex;
+        }
+
+        .file-viewer-content {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #667eea;
+            position: relative;
+        }
+
+        .file-viewer-header {
+            padding: 30px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-viewer-title {
+            font-size: 1.8em;
+            color: #667eea;
+        }
+
+        .close-viewer-btn {
+            background: rgba(231, 76, 60, 0.2);
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-viewer-btn:hover {
+            background: rgba(231, 76, 60, 0.4);
+            transform: rotate(90deg);
+        }
+
+        .file-viewer-body {
+            padding: 30px;
+        }
+
+        .file-preview-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .file-preview-large {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .file-icon-large {
+            font-size: 8em;
+            margin: 30px 0;
+        }
+
+        .metadata-section {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metadata-title {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metadata-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .metadata-label {
+            font-size: 0.9em;
+            color: #b8b8d1;
+            margin-bottom: 5px;
+        }
+
+        .metadata-value {
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .analysis-preview {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .analysis-preview h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .analysis-preview p {
+            color: #d1d1e0;
+            line-height: 1.7;
+        }
+
+        .viewer-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .viewer-action-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            background: rgba(102, 126, 234, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .viewer-action-btn:hover {
+            background: rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .viewer-action-btn.danger {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        .viewer-action-btn.danger:hover {
+            background: rgba(231, 76, 60, 0.4);
+        }
+
+        /* Tips Section */
+        .tips-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 50px 40px;
+            border-radius: 20px;
+            margin-top: 60px;
+        }
+
+        .tips-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .tip-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .tip-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .tip-title {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .tip-text {
+            color: #b8b8d1;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
+            border-top: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .copyright {
+            color: #8e8ea8;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 12, 41, 0.98);
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .page-header h1 {
+                font-size: 2.5em;
+            }
+
+            .workflow-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .step-arrow {
+                transform: rotate(90deg);
+            }
+
+            .upload-zone {
+                padding: 50px 20px;
+            }
+
+            .file-viewer-content {
+                max-width: 100%;
+                margin: 10px;
+            }
+
+            .file-viewer-header {
+                padding: 20px;
+            }
+
+            .file-viewer-title {
+                font-size: 1.3em;
+            }
+
+            .file-viewer-body {
+                padding: 20px;
+            }
+
+            .metadata-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .viewer-actions {
+                flex-direction: column;
+            }
+
+            .loading-content {
+                padding: 30px;
+                margin: 20px;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Coherent Frameworks</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="framework.html">Framework</a></li>
+                <li><a href="platform.html">Platform</a></li>
+                <li><a href="infrastructure.html">Infrastructure</a></li>
+                <li><a href="upload.html" class="active">Upload Assets</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Upload Creative Assets</h1>
+        <p>Transform your creative work into actionable intelligence</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Workflow Steps -->
+        <div class="workflow-steps">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <div class="step-text">Select Category</div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <div class="step-text">Upload Files</div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <div class="step-text">Analyze</div>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="workflow-step">
+                <div class="step-number">4</div>
+                <div class="step-text">View Results</div>
+            </div>
+        </div>
+
+        <!-- Category Selection -->
+        <div class="category-section">
+            <h2 class="category-title">Select Asset Category</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="selectCategory(this, 'visual')">
+                    <div class="category-icon">🎨</div>
+                    <div class="category-name">Visual Assets</div>
+                    <div class="category-desc">Logos, images, designs</div>
+                </div>
+                <div class="category-card" onclick="selectCategory(this, 'audio')">
+                    <div class="category-icon">🎵</div>
+                    <div class="category-name">Audio Files</div>
+                    <div class="category-desc">Music, sound, podcasts</div>
+                </div>
+                <div class="category-card" onclick="selectCategory(this, 'text')">
+                    <div class="category-icon">📝</div>
+                    <div class="category-name">Text Documents</div>
+                    <div class="category-desc">Brand voice, themes</div>
+                </div>
+                <div class="category-card" onclick="selectCategory(this, 'video')">
+                    <div class="category-icon">🎬</div>
+                    <div class="category-name">Video Content</div>
+                    <div class="category-desc">Promotional, tutorials</div>
+                </div>
+                <div class="category-card" onclick="selectCategory(this, 'color')">
+                    <div class="category-icon">🌈</div>
+                    <div class="category-name">Color Palettes</div>
+                    <div class="category-desc">Brand colors, schemes</div>
+                </div>
+                <div class="category-card" onclick="selectCategory(this, 'mixed')">
+                    <div class="category-icon">📦</div>
+                    <div class="category-name">Mixed Media</div>
+                    <div class="category-desc">Multiple asset types</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Zone -->
+        <div class="upload-section">
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📤</div>
+                <h2 class="upload-title">Drag & Drop Files Here</h2>
+                <p class="upload-description">or click to browse your computer</p>
+                <button class="upload-button">Choose Files</button>
+                <input type="file" id="fileInput" class="file-input" multiple accept="image/*,audio/*,video/*,.pdf,.doc,.docx,.txt">
+                <p class="supported-formats">
+                    Supported formats: JPG, PNG, GIF, SVG, MP3, WAV, MP4, PDF, DOC, TXT
+                </p>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section" id="progressSection">
+            <h2 class="progress-title">Uploading Files...</h2>
+            <div id="progressContainer"></div>
+        </div>
+
+        <!-- Uploaded Files -->
+        <div class="uploaded-section" id="uploadedSection">
+            <h2 class="section-title">Your Uploaded Assets</h2>
+            <div class="uploaded-grid" id="uploadedGrid"></div>
+        </div>
+
+        <!-- Analyze Button -->
+        <div class="analyze-section" id="analyzeSection">
+            <button class="analyze-button" onclick="analyzeAssets()">
+                Analyze Assets & Generate Insights
+            </button>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <h2 class="tips-title">Upload Best Practices</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">✨</div>
+                    <h3 class="tip-title">High Quality Assets</h3>
+                    <p class="tip-text">Upload high-resolution images and high-quality audio files for best analysis results. Minimum 1080p for images, 320kbps for audio.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🏷️</div>
+                    <h3 class="tip-title">Proper Categorization</h3>
+                    <p class="tip-text">Select the correct category for your assets to ensure accurate analysis and relevant insights generation.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">📚</div>
+                    <h3 class="tip-title">Comprehensive Collection</h3>
+                    <p class="tip-text">Upload multiple related assets (logos, colors, fonts) together to generate more cohesive brand frameworks.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🔄</div>
+                    <h3 class="tip-title">Version Control</h3>
+                    <p class="tip-text">The platform automatically tracks versions of your assets, allowing you to compare different iterations over time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>Coherent Frameworks for Creative Intelligence & Operational Systems</p>
+            <p class="copyright">Copyright © 2026 Michael Grant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- File Viewer Modal -->
+    <div class="file-viewer-modal" id="fileViewerModal">
+        <div class="file-viewer-content">
+            <div class="file-viewer-header">
+                <h2 class="file-viewer-title" id="viewerFileName">File Details</h2>
+                <button class="close-viewer-btn" onclick="closeFileViewer()">×</button>
+            </div>
+            <div class="file-viewer-body">
+                <div class="file-preview-section" id="filePreviewSection">
+                    <!-- Preview content will be inserted here -->
+                </div>
+                
+                <div class="metadata-section">
+                    <h3 class="metadata-title">File Information</h3>
+                    <div class="metadata-grid">
+                        <div class="metadata-item">
+                            <div class="metadata-label">File Name</div>
+                            <div class="metadata-value" id="metaFileName">-</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">File Size</div>
+                            <div class="metadata-value" id="metaFileSize">-</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">File Type</div>
+                            <div class="metadata-value" id="metaFileType">-</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">Category</div>
+                            <div class="metadata-value" id="metaCategory">-</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">Upload Date</div>
+                            <div class="metadata-value" id="metaUploadDate">-</div>
+                        </div>
+                        <div class="metadata-item">
+                            <div class="metadata-label">Status</div>
+                            <div class="metadata-value" id="metaStatus">Ready for Analysis</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-preview">
+                    <h3>Quick Analysis Preview</h3>
+                    <p id="quickAnalysisText">This file will be analyzed through our four-layer framework: Input Layer for standardization, Interpretation Layer for pattern recognition, Synthesis Layer for framework generation, and Application Layer for insight delivery. Click "Analyze Assets" to generate complete insights.</p>
+                </div>
+
+                <div class="viewer-actions">
+                    <button class="viewer-action-btn" onclick="downloadFile()">⬇ Download</button>
+                    <button class="viewer-action-btn" onclick="editMetadata()">✏️ Edit Info</button>
+                    <button class="viewer-action-btn danger" onclick="deleteFileFromViewer()">🗑️ Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="loading-modal" id="loadingModal">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 class="loading-title">Analyzing Assets</h2>
+            <p style="color: #b8b8d1; margin-bottom: 30px;">Processing <span id="assetCount">0</span> asset(s)...</p>
+            <div class="loading-steps">
+                <div class="loading-step" id="step1">Input Layer: Standardization</div>
+                <div class="loading-step" id="step2">Interpretation Layer: Pattern Recognition</div>
+                <div class="loading-step" id="step3">Synthesis Layer: Framework Generation</div>
+                <div class="loading-step" id="step4">Application Layer: Insight Delivery</div>
+            </div>
+            <p style="color: #8e8ea8; margin-top: 25px; font-size: 0.95em;">This may take a few moments...</p>
+        </div>
+    </div>
+
+    <script>
+        let selectedCategory = null;
+        let uploadedFiles = [];
+
+        // Load files from localStorage on init
+        window.addEventListener('load', () => {
+            const stored = localStorage.getItem('uploadedAssets');
+            if (stored) {
+                uploadedFiles = JSON.parse(stored);
+                displayUploadedFiles();
+                if(uploadedFiles.length > 0) {
+                     document.getElementById('analyzeSection').classList.add('active');
+                }
+            }
+        });
+
+        function saveToStorage() {
+            localStorage.setItem('uploadedAssets', JSON.stringify(uploadedFiles));
+        }
+
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function selectCategory(element, category) {
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedCategory = category;
+        }
+
+        // Drag and drop functionality
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            if (!selectedCategory) {
+                alert('Please select an asset category first!');
+                return;
+            }
+
+            const progressSection = document.getElementById('progressSection');
+            const progressContainer = document.getElementById('progressContainer');
+            progressSection.classList.add('active');
+            progressContainer.innerHTML = '';
+
+            Array.from(files).forEach((file, index) => {
+                const progressItem = document.createElement('div');
+                progressItem.className = 'progress-item';
+                progressItem.innerHTML = `
+                    <div class="progress-header">
+                        <span class="progress-filename">${file.name}</span>
+                        <span class="progress-status">Uploading...</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                `;
+                progressContainer.appendChild(progressItem);
+
+                // Simulate upload progress
+                simulateUpload(progressItem, file, index);
+            });
+        }
+
+        function simulateUpload(progressItem, file, index) {
+            const progressBar = progressItem.querySelector('.progress-bar');
+            const statusText = progressItem.querySelector('.progress-status');
+            let progress = 0;
+
+            const interval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    statusText.textContent = 'Complete!';
+                    statusText.style.color = '#2ecc71';
+                    
+                    // Add to uploaded files
+                    setTimeout(() => {
+                        addUploadedFile(file);
+                    }, 500);
+                }
+                progressBar.style.width = progress + '%';
+            }, 300);
+        }
+
+        function addUploadedFile(file) {
+            const fileObj = {
+                name: file.name,
+                size: formatFileSize(file.size),
+                sizeBytes: file.size, // Store raw bytes for analytics
+                type: file.type || 'unknown',
+                category: selectedCategory,
+                preview: getFileIcon(file.type || ''),
+                uploadDate: new Date().toISOString()
+            };
+            
+            uploadedFiles.push(fileObj);
+            saveToStorage(); // Persist data
+            displayUploadedFiles();
+
+            // Show analyze button if files are uploaded
+            if (uploadedFiles.length > 0) {
+                document.getElementById('analyzeSection').classList.add('active');
+            }
+        }
+
+        function displayUploadedFiles() {
+            const uploadedSection = document.getElementById('uploadedSection');
+            const uploadedGrid = document.getElementById('uploadedGrid');
+            
+            if(uploadedFiles.length > 0) {
+                uploadedSection.classList.add('active');
+            } else {
+                uploadedSection.classList.remove('active');
+            }
+            uploadedGrid.innerHTML = '';
+
+            uploadedFiles.forEach((file, index) => {
+                const fileCard = document.createElement('div');
+                fileCard.className = 'file-card';
+                fileCard.innerHTML = `
+                    <div class="file-preview">${file.preview}</div>
+                    <div class="file-info">
+                        <div class="file-name" title="${file.name}">${file.name}</div>
+                        <div class="file-meta">
+                            <span>${file.size}</span>
+                            <span>${file.type.split('/')[0]}</span>
+                        </div>
+                        <div class="file-category">${getCategoryName(file.category)}</div>
+                        <div class="file-actions">
+                            <button class="file-action-btn" onclick="viewFile(${index})">View</button>
+                            <button class="file-action-btn delete" onclick="deleteFile(${index})">Delete</button>
+                        </div>
+                    </div>
+                `;
+                uploadedGrid.appendChild(fileCard);
+            });
+        }
+
+        function getFileIcon(type) {
+            if (type.startsWith('image/')) return '🖼️';
+            if (type.startsWith('audio/')) return '🎵';
+            if (type.startsWith('video/')) return '🎬';
+            if (type.includes('pdf')) return '📄';
+            if (type.includes('document') || type.includes('text')) return '📝';
+            return '📦';
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'visual': 'Visual Assets',
+                'audio': 'Audio Files',
+                'text': 'Text Documents',
+                'video': 'Video Content',
+                'color': 'Color Palettes',
+                'mixed': 'Mixed Media'
+            };
+            return names[category] || category;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function viewFile(index) {
+            const file = uploadedFiles[index];
+            const modal = document.getElementById('fileViewerModal');
+            
+            // Set file name in header
+            document.getElementById('viewerFileName').textContent = file.name;
+            
+            // Set metadata
+            document.getElementById('metaFileName').textContent = file.name;
+            document.getElementById('metaFileSize').textContent = file.size;
+            document.getElementById('metaFileType').textContent = file.type || 'Unknown';
+            document.getElementById('metaCategory').textContent = getCategoryName(file.category);
+            // Handle date parsing safely
+            let dateStr = 'Just now';
+            if(file.uploadDate) {
+                 dateStr = new Date(file.uploadDate).toLocaleDateString() + ' ' + new Date(file.uploadDate).toLocaleTimeString();
+            }
+            document.getElementById('metaUploadDate').textContent = dateStr;
+            
+            // Set preview based on file type
+            const previewSection = document.getElementById('filePreviewSection');
+            if (file.type && file.type.startsWith('image/')) {
+                previewSection.innerHTML = `
+                    <div style="color: #b8b8d1; margin-bottom: 20px;">Image Preview</div>
+                    <div class="file-icon-large">${file.preview}</div>
+                    <p style="color: #8e8ea8; font-size: 0.95em;">In a full implementation, the actual image would be displayed here</p>
+                `;
+            } else {
+                previewSection.innerHTML = `
+                    <div style="color: #b8b8d1; margin-bottom: 20px;">File Preview</div>
+                    <div class="file-icon-large">${file.preview}</div>
+                `;
+            }
+            
+            // Set quick analysis text based on file type
+            let analysisText = '';
+            if (file.type && file.type.startsWith('image/')) {
+                analysisText = 'This visual asset will be analyzed for color palette, composition, style consistency, and emotional tone. Our system will extract design patterns and identify brand identity elements.';
+            } else if (file.type && file.type.startsWith('audio/')) {
+                analysisText = 'This audio file will be analyzed for tempo, chord progressions, emotional signature, and musical patterns. We\'ll identify sonic brand elements and audience resonance potential.';
+            } else if (file.type && file.type.startsWith('video/')) {
+                analysisText = 'This video content will be analyzed for visual style, pacing, narrative structure, and engagement potential. We\'ll extract key frames and identify consistent brand elements.';
+            } else {
+                analysisText = 'This file will be analyzed through our four-layer framework: Input Layer for standardization, Interpretation Layer for pattern recognition, Synthesis Layer for framework generation, and Application Layer for insight delivery.';
+            }
+            document.getElementById('quickAnalysisText').textContent = analysisText;
+            
+            // Store current file index for actions
+            modal.setAttribute('data-file-index', index);
+            
+            // Show modal
+            modal.classList.add('active');
+        }
+
+        function closeFileViewer() {
+            document.getElementById('fileViewerModal').classList.remove('active');
+        }
+
+        function downloadFile() {
+            const modal = document.getElementById('fileViewerModal');
+            const index = modal.getAttribute('data-file-index');
+            const file = uploadedFiles[index];
+            alert(`Downloading ${file.name}...\n\nIn a full implementation, this would trigger a download of the original file.`);
+        }
+
+        function editMetadata() {
+            const modal = document.getElementById('fileViewerModal');
+            const index = modal.getAttribute('data-file-index');
+            const file = uploadedFiles[index];
+            
+            const newCategory = prompt('Select new category:\n1. Visual Assets\n2. Audio Files\n3. Text Documents\n4. Video Content\n5. Color Palettes\n6. Mixed Media\n\nEnter number (1-6):', '1');
+            
+            if (newCategory) {
+                const categories = ['visual', 'audio', 'text', 'video', 'color', 'mixed'];
+                const categoryIndex = parseInt(newCategory) - 1;
+                if (categoryIndex >= 0 && categoryIndex < categories.length) {
+                    file.category = categories[categoryIndex];
+                    saveToStorage(); // Save changes
+                    document.getElementById('metaCategory').textContent = getCategoryName(file.category);
+                    displayUploadedFiles();
+                    alert('Category updated successfully!');
+                }
+            }
+        }
+
+        function deleteFileFromViewer() {
+            const modal = document.getElementById('fileViewerModal');
+            const index = parseInt(modal.getAttribute('data-file-index'));
+            
+            if (confirm(`Delete ${uploadedFiles[index].name}?`)) {
+                uploadedFiles.splice(index, 1);
+                saveToStorage(); // Save changes
+                displayUploadedFiles();
+                closeFileViewer();
+                
+                if (uploadedFiles.length === 0) {
+                    document.getElementById('analyzeSection').classList.remove('active');
+                }
+            }
+        }
+
+        function deleteFile(index) {
+            if (confirm(`Delete ${uploadedFiles[index].name}?`)) {
+                uploadedFiles.splice(index, 1);
+                saveToStorage(); // Save changes
+                displayUploadedFiles();
+                
+                if (uploadedFiles.length === 0) {
+                    document.getElementById('analyzeSection').classList.remove('active');
+                }
+            }
+        }
+
+        function analyzeAssets() {
+            if (uploadedFiles.length === 0) {
+                alert('Please upload some assets first!');
+                return;
+            }
+
+            // Reset all steps
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            steps.forEach(stepId => {
+                const step = document.getElementById(stepId);
+                step.classList.remove('active', 'complete');
+            });
+
+            // Show loading modal
+            const modal = document.getElementById('loadingModal');
+            document.getElementById('assetCount').textContent = uploadedFiles.length;
+            modal.classList.add('active');
+
+            // Animate through steps
+            let currentStep = 0;
+
+            const stepInterval = setInterval(() => {
+                if (currentStep > 0) {
+                    document.getElementById(steps[currentStep - 1]).classList.remove('active');
+                    document.getElementById(steps[currentStep - 1]).classList.add('complete');
+                }
+                
+                if (currentStep < steps.length) {
+                    document.getElementById(steps[currentStep]).classList.add('active');
+                    currentStep++;
+                } else {
+                    clearInterval(stepInterval);
+                    
+                    // Mark last step as complete
+                    document.getElementById(steps[steps.length - 1]).classList.remove('active');
+                    document.getElementById(steps[steps.length - 1]).classList.add('complete');
+                    
+                    // Redirect to dashboard after brief pause
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 800);
+                }
+            }, 1200);
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Close file viewer when clicking outside
+        document.getElementById('fileViewerModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeFileViewer();
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeFileViewer();
+            }
+        });
+    </script>
+</body>
+</html>
